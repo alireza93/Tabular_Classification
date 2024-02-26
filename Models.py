@@ -5,6 +5,9 @@ from sklearn.ensemble import (
     AdaBoostClassifier,
 )
 from sklearn.neural_network import MLPClassifier
+from sklearn.pipeline import Pipeline
+
+import Preprocess
 
 RANDOM_STATE = 50
 
@@ -24,3 +27,13 @@ clsf_rf = RandomForestClassifier(
 clsf_hgb = HistGradientBoostingClassifier(
     min_samples_leaf=1, learning_rate=0.12, random_state=RANDOM_STATE
 )
+
+
+def create_model_pipeline(preprocessor, model):
+    model = Pipeline(
+        steps=[
+            ("preprocessor", preprocessor),
+            ("classifier", clsf_rf),
+        ]
+    )
+    return model
