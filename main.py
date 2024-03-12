@@ -6,6 +6,10 @@ import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
 
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+
 RANDOM_STATE = 50
 
 
@@ -25,6 +29,15 @@ def evaluate(model, test_features, test_labels):
         f"Accuracy: {acc:.4f},\nKappa: {kappa:.4f},\nROC AUC One-vs-Rest: {np.array2string(roc_auc, precision=2, floatmode='fixed')}"
     )
     print(f"Confusion Matrix:\n{cfmat}")
+    display_conf_mat(cfmat)
+
+
+def display_conf_mat(cfmat):
+    plt.title("Confusion matrix")
+    sns.heatmap(cfmat, cmap="Blues", annot=True, fmt="g", cbar=False)
+    plt.xlabel("Predicted")
+    plt.ylabel("Ground truth")
+    plt.show()
 
 
 def main():
