@@ -1,6 +1,7 @@
 from sklearn.base import accuracy_score
 from sklearn.metrics import cohen_kappa_score, confusion_matrix, roc_auc_score
 import Models, Preprocess
+from Parameter_tuning import grid_search
 
 import pandas as pd
 import numpy as np
@@ -66,8 +67,16 @@ def main():
     model = Models.create_model_pipeline(prep,Models.clsf_rf)
 
     model.fit(train_features, train_labels)
-    
+
     evaluate(model,test_features,test_labels)
+
+    param_grid = {
+        "preprocessor__feature_selector__k": np.linspace(50, 200, num=4).astype(int),
+        "classifier__n_estimators": np.linspace(50, 750, num=25).astype(int),
+        "classifier__criterion": ["gini", "entropy"],
+    }
+
+    grid_search(model, param_grid, train_features, train_labels)
 
 
 if __name__ == "main":
