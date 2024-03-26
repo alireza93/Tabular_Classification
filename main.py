@@ -1,6 +1,6 @@
 from sklearn.base import accuracy_score
 from sklearn.metrics import cohen_kappa_score, confusion_matrix, roc_auc_score
-import Models, Preprocess
+import Models, Preprocess, Explain
 from Parameter_tuning import grid_search
 
 import pandas as pd
@@ -77,6 +77,7 @@ def main():
     }
 
     grid_search(model, param_grid, train_features, train_labels)
+    Explain.explain_permutation(model,test_features,test_labels,20,10)
 
 
 if __name__ == "main":
