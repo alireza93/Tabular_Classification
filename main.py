@@ -10,6 +10,8 @@ from sklearn.model_selection import train_test_split
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+from sklearn.model_selection import cross_validate, StratifiedKFold
+
 
 RANDOM_STATE = 50
 
@@ -39,6 +41,25 @@ def display_conf_mat(cfmat):
     plt.xlabel("Predicted")
     plt.ylabel("Ground truth")
     plt.show()
+
+
+def cross_validation(train_features, train_labels,kfold=5):
+
+    stratified_cv = StratifiedKFold(n_splits=kfold, shuffle=True)
+    cross_val_result = cross_validate(
+        model,
+        train_features,
+        train_labels,
+        cv=stratified_cv,
+        scoring="accuracy",
+        n_jobs=-1,
+        return_estimator=True,
+    )
+    print(
+        f"{kfold}fold cross validation accuracy average: {cross_val_result['test_score'].mean()}"
+    )
+    model = cross_val_result["estimator"][0]
+    return model
 
 
 def main():
