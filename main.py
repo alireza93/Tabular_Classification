@@ -3,6 +3,8 @@ from sklearn.metrics import cohen_kappa_score, confusion_matrix, roc_auc_score
 import Models, Preprocess, Explain
 from Parameter_tuning import grid_search
 
+import os
+import pickle
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
@@ -14,7 +16,7 @@ from sklearn.model_selection import cross_validate, StratifiedKFold
 
 
 RANDOM_STATE = 50
-
+OUTPUT_FOLDER = "./out"
 
 def evaluate(model, test_features, test_labels):
     preds = model.predict(test_features)
@@ -100,6 +102,12 @@ def main():
     grid_search(model, param_grid, train_features, train_labels)
     Explain.explain_permutation(model,test_features,test_labels,20,10)
 
+    # Saving data sets and the fitted model:
+    with open(os.path.join(OUTPUT_FOLDER, "model.pkl"), "wb") as f:
+        pickle.dump(
+            [train_features, train_labels, test_features, test_labels, model],
+            f,
+        )
 
 if __name__ == "main":
     main()
