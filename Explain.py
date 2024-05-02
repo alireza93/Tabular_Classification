@@ -6,6 +6,8 @@ from sklearn.metrics import (
     make_scorer,
 )
 import shap
+import eli5
+from eli5.sklearn import PermutationImportance
 
 
 def explain_permutation(model, features, labels, repeats=20, topn=20):
@@ -64,3 +66,8 @@ def shap_exp_sample(expl, shap_values, data, sample_idx, class_idx):
             feature_names=data.columns.tolist(),
         )
     )
+
+
+def eli5_explain(model, features, labels):
+    perm = PermutationImportance(model).fit(features, labels)
+    eli5.show_weights(perm)
