@@ -20,3 +20,12 @@ def vis_class_imbalance(labels):
     labels_df.value_counts().plot.pie(autopct=autopct)
     plt.show()
 
+def feature_target_relation(df, feature_sel, target):
+    sns.swarmplot(
+    df,
+    y=feature_sel,
+    x=target,
+    size=1.5,
+    orient="v",
+    warn_thresh=0.1,
+    )
